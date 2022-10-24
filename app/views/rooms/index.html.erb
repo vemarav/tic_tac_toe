@@ -1,14 +1,20 @@
-<p style="color: green"><%= notice %></p>
 
-<h1>Rooms</h1>
-
-<div id="rooms">
-  <% @rooms.each do |room| %>
-    <%= render room %>
-    <p>
-      <%= link_to "Show this room", room %>
-    </p>
-  <% end %>
+<div class="center">
+  <div class="container">
+    <div><%= render "title" %></div>
+    
+    <div>
+      <%= render "form", room: @room %>
+    </div>
+    
+    <div class="instructions">
+      <div class="q">How to play</div>
+      <ul>
+        <li>Create a room</li>
+        <li>Share room url with other player</li>
+        <li>Play & Enjoy 👾</li>
+      </ul>
+    </div>
+  </div>
 </div>
 
-<%= link_to "New room", new_room_path %>
