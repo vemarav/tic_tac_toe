@@ -1,0 +1,41 @@
+.rooms.show {
+  height: 100%;
+
+  .center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: row;
+
+    .cell {
+      width: 14vh;
+      height: 14vh;
+      justify-content: center;
+      align-items: center;
+      display: flex;
+      background-color: #373a3c;
+      margin: 10px 5px;
+      cursor: pointer;
+      font-size: 2rem;
+      color: #ffffff;
+    }
+  }
+
+  .share-url {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.8rem;
+    padding: 1rem 1.5rem;
+    text-align: center;
+    
+    .url {
+      color: #0275d8;
+    }
+  }
+
+}

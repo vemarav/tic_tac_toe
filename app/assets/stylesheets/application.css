@@ -13,3 +13,8 @@
  *= require_tree .
  *= require_self
  */
+
+.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}

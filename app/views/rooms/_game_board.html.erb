@@ -1,0 +1,10 @@
+<% 3.times do |row| %>
+  <div>
+    <% 3.times do |col| %>
+      <% index=row + col * 3 %>
+      <div class="cell" data-action="click->room#play" data-index="<%= index %>" data-url="<%= room_path %>">
+        <%= room.board[index] %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

@@ -1,2 +1,19 @@
-show
+<div class="center">
+  <div>
+    <%= render "title" %>
+  </div>
 
+  <% if @room.players.include? cookies[:uuid] %>
+    <div>Playing as <%= @room.players[0] == cookies[:uuid] ? 'X' : 'O' %></div>
+    <div id="room_id" data-channel="<%= @room.friendly_id %>" data-controller="room"
+      data-current="<%= @room.current %>" class="container <%= @disabled %>">
+      <%= render "game_board", room: @room %>
+    </div>
+    <div class="share-url">
+      share below url to play with your friend
+      <br><span class="url"><%= room_url(@room) %></span><br>
+    </div>
+  <% else %>
+    <div>This board is full</div>
+  <% end %>
+</div>

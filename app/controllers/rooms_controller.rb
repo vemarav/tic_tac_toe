@@ -8,6 +8,12 @@ class RoomsController < ApplicationController
 
   # GET /rooms/1 or /rooms/1.json
   def show
+    unless @room.player_exist? cookies[:uuid]
+      @room.players << cookies[:uuid]
+      @room.save
+    end
+
+    @disabled = @room.is_played?(cookies[:uuid]) ? "disabled" : ""
   end
 
   # POST /rooms or /rooms.json
@@ -22,15 +28,15 @@ class RoomsController < ApplicationController
 
   # PATCH/PUT /rooms/1 or /rooms/1.json
   def update
-    # respond_to do |format|
-    #   if @room.update(room_params)
-    #     format.html { redirect_to room_url(@room), notice: "Room was successfully updated." }
-    #     format.json { render :show, status: :ok, location: @room }
-    #   else
-    #     format.html { render :edit, status: :unprocessable_entity }
-    #     format.json { render json: @room.errors, status: :unprocessable_entity }
-    #   end
-    # end
+    @room.update_board(update_params)
+    ActionCable.server.broadcast "room_channel_#{@room.slug}",
+      { room: @room, playerId: cookies[:uuid], won: @room.won? }
+
+    @room.clear if @room.won?
+
+    respond_to do |format|
+      format.json { render :update }
+    end
   end
 
   # DELETE /rooms/1 or /rooms/1.json
@@ -44,13 +50,18 @@ class RoomsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_room
-      @room = Room.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def room_params
-      params.require(:room).permit(:name, :slug)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_room
+    @room = Room.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def room_params
+    params.require(:room).permit(:name, :slug)
+  end
+
+  def update_params
+    params.require(:room).permit(:index, :current)
+  end
 end
